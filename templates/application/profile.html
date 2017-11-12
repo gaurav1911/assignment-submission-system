@@ -1,0 +1,38 @@
+{% extends 'application/base_profile.html' %}
+
+{% block body %}
+<div class="container container-fluid">
+
+    <!-- Albums -->
+    {% if error_message %}
+      <div class="alert alert-danger">
+        <strong>{{ error_message }}</strong>
+      </div>
+    {% endif %}
+        <h3>{{ user.username }}'s Assignments</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Assignment</th>
+              <th>Deadline</th>
+              <th>Solution</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% if assignments %}
+            {% for assign in assignments %}
+                  <tr>
+                    <td><a href="{% url 'application:detail' assign.id %}">{{ assign.name }}</a></td>
+                    <td>{{ assign.deadline }}</td>
+                    {% for sol in solutions %}
+                      {% if assign.id == sol.assignment.id %}
+                        <td><a target="_blank" href="{{ sol.file.url }}">Solution</a></td>
+                      {% endif %}
+                    {% endfor %}
+                  </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endif %}
+</div>
+{% endblock %}
